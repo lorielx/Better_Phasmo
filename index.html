@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <!-- Защита от индексации поисковиками -->
+<title>Phasmophobia — Ассистент</title>
+
+<!-- Защита от индексации поисковиками -->
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate">
 <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="yandex" content="noindex, nofollow, noarchive">
@@ -13,8 +14,12 @@
 <meta name="duckduckbot" content="noindex, nofollow">
 <meta name="Baiduspider" content="noindex, nofollow">
 <meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet">
-  
-<title>Phasmophobia — Ассистент</title>
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self' https://web.telegram.org https://*.telegram.org;">
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.css">
@@ -36,6 +41,7 @@
     --accent2: #2ecc71;
     --ghost: #9b59b6;
     --gold: #f1c40f;
+    --room: #3498db;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
@@ -50,21 +56,11 @@
     overscroll-behavior: none;
   }
   .creepy { font-family: 'Creepster', cursive; letter-spacing: 2px; }
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-  }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; }
   .tab-btn {
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all .2s;
-    color: var(--muted);
-    font-weight: 500;
-    border: 1px solid transparent;
-    font-size: 14px;
-    white-space: nowrap;
+    padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: all .2s;
+    color: var(--muted); font-weight: 500; border: 1px solid transparent;
+    font-size: 14px; white-space: nowrap;
   }
   .tab-btn:active { transform: scale(0.95); }
   .tab-btn.active {
@@ -74,105 +70,51 @@
     box-shadow: 0 0 20px rgba(201,48,44,0.15);
   }
   .evidence-chip {
-    padding: 10px 14px;
-    border-radius: 20px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all .2s;
-    font-size: 13px;
-    user-select: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    padding: 10px 14px; border-radius: 20px; background: var(--bg2);
+    border: 1px solid var(--border); cursor: pointer; transition: all .2s;
+    font-size: 13px; user-select: none; display: inline-flex; align-items: center; gap: 8px;
   }
   .evidence-chip:active { transform: scale(0.95); }
   .evidence-chip.found {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-    color: white;
-    border-color: #27ae60;
-    box-shadow: 0 0 12px rgba(46,204,113,0.4);
+    background: linear-gradient(135deg, #2ecc71, #27ae60); color: white;
+    border-color: #27ae60; box-shadow: 0 0 12px rgba(46,204,113,0.4);
   }
   .evidence-chip.ruled-out {
-    background: rgba(201,48,44,0.15);
-    color: #ff6b6b;
-    border-color: var(--accent);
-    text-decoration: line-through;
-    opacity: 0.7;
+    background: rgba(201,48,44,0.15); color: #ff6b6b;
+    border-color: var(--accent); text-decoration: line-through; opacity: 0.7;
   }
+  .evidence-chip.sm { padding: 6px 10px; font-size: 11px; }
   .ghost-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px;
-    transition: all .25s;
-    cursor: pointer;
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px; transition: all .25s; cursor: pointer;
   }
   .ghost-card:active { transform: scale(0.98); }
   .ghost-card.eliminated { opacity: 0.3; filter: grayscale(1); }
-  .ghost-card.possible {
-    border-color: var(--accent2);
-    box-shadow: 0 0 16px rgba(46,204,113,0.25);
-  }
+  .ghost-card.possible { border-color: var(--accent2); box-shadow: 0 0 16px rgba(46,204,113,0.25); }
   .btn {
-    padding: 10px 16px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-    color: var(--text);
-    cursor: pointer;
-    transition: all .2s;
-    font-size: 14px;
-    font-weight: 500;
+    padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--bg2); color: var(--text); cursor: pointer; transition: all .2s;
+    font-size: 14px; font-weight: 500;
   }
   .btn:active { transform: scale(0.95); }
-  .btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
   .btn-primary {
     background: linear-gradient(135deg, var(--accent), #8b1e1b);
-    border-color: var(--accent);
-    color: var(--tg-theme-button-text-color, white);
+    border-color: var(--accent); color: var(--tg-theme-button-text-color, white);
   }
   .btn-primary:active { box-shadow: 0 0 16px rgba(201,48,44,0.4); }
-  .btn-success {
-    background: linear-gradient(135deg, var(--accent2), #1e8449);
-    border-color: var(--accent2);
-    color: white;
-  }
-  .btn-use {
-    background: linear-gradient(135deg, var(--accent), #8b1e1b);
-    border-color: var(--accent);
-    color: white;
-  }
-  .btn-return {
-    background: var(--bg2);
-    border-color: var(--border);
-    color: var(--muted);
-  }
+  .btn-use { background: linear-gradient(135deg, var(--accent), #8b1e1b); border-color: var(--accent); color: white; }
+  .btn-return { background: var(--bg2); border-color: var(--border); color: var(--muted); }
   input[type="text"], input[type="number"], select {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 10px 12px;
-    border-radius: 8px;
-    outline: none;
-    font-family: inherit;
-    font-size: 14px;
+    background: var(--bg2); border: 1px solid var(--border); color: var(--text);
+    padding: 10px 12px; border-radius: 8px; outline: none; font-family: inherit; font-size: 14px;
   }
   input:focus, select:focus { border-color: var(--accent); }
   .dice {
     width: 80px; height: 80px;
-    background: linear-gradient(135deg, #fff, #ddd);
-    color: #111;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-    font-weight: bold;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    background: linear-gradient(135deg, #fff, #ddd); color: #111;
+    border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    font-size: 40px; font-weight: bold; box-shadow: 0 6px 20px rgba(0,0,0,0.5);
     transition: transform .3s;
   }
   .dice.rolling { animation: shake .6s ease-in-out; }
@@ -182,78 +124,32 @@
     50% { transform: rotate(180deg) scale(0.9); }
     75% { transform: rotate(360deg) scale(1.1); }
   }
-  .sanity-bar, .noise-bar {
-    height: 8px;
-    background: var(--bg);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-  }
-  .sanity-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    transition: width .3s;
-  }
-  .noise-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #f39c12, #e74c3c);
-    transition: width .3s;
-  }
+  .sanity-bar, .noise-bar { height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+  .sanity-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .3s; }
+  .noise-fill { height: 100%; background: linear-gradient(90deg, #f39c12, #e74c3c); transition: width .3s; }
   .modal-bg {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-    padding: 16px;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px;
   }
   .modal {
-    background: var(--panel);
-    border: 1px solid var(--ghost);
-    border-radius: 14px;
-    padding: 20px;
-    max-width: 600px;
-    width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
+    background: var(--panel); border: 1px solid var(--ghost); border-radius: 14px;
+    padding: 20px; max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto;
     box-shadow: 0 0 40px rgba(155,89,182,0.3);
   }
   .scroll::-webkit-scrollbar { width: 6px; }
   .scroll::-webkit-scrollbar-track { background: var(--bg2); }
   .scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-  .scroll::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 600;
-  }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
   .pulse { animation: pulse 2s infinite; }
-  @keyframes pulse {
-    0%,100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
   .hidden { display: none !important; }
 
   .cursed-item {
-    background: var(--bg2);
-    border: 2px solid var(--ghost);
-    border-radius: 12px;
-    padding: 16px;
-    transition: all .3s;
-    position: relative;
-    overflow: hidden;
+    background: var(--bg2); border: 2px solid var(--ghost); border-radius: 12px;
+    padding: 16px; transition: all .3s; position: relative; overflow: hidden;
   }
   .cursed-item::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
     background: radial-gradient(circle, rgba(155,89,182,0.1) 0%, transparent 70%);
     animation: glow 4s ease-in-out infinite;
   }
@@ -261,94 +157,97 @@
     0%, 100% { transform: translate(0, 0); opacity: 0.5; }
     50% { transform: translate(10%, 10%); opacity: 0.8; }
   }
-  .cursed-item-content {
-    position: relative;
-    z-index: 1;
-  }
-  .cursed-item:hover {
-    border-color: var(--accent);
-    box-shadow: 0 0 24px rgba(155,89,182,0.3);
-  }
+  .cursed-item-content { position: relative; z-index: 1; }
+  .cursed-item:hover { border-color: var(--accent); box-shadow: 0 0 24px rgba(155,89,182,0.3); }
   .cursed-item.selected {
-    border-color: var(--ghost);
-    box-shadow: 0 0 24px rgba(155,89,182,0.4);
+    border-color: var(--ghost); box-shadow: 0 0 24px rgba(155,89,182,0.4);
     background: linear-gradient(135deg, rgba(155,89,182,0.1), var(--bg2));
   }
-  .cursed-item.dimmed {
-    opacity: 0.4;
-    filter: grayscale(0.6);
-  }
+  .cursed-item.dimmed { opacity: 0.4; filter: grayscale(0.6); }
   .usage-counter {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+    border-radius: 12px; background: rgba(155,89,182,0.2); border: 1px solid var(--ghost);
+    font-size: 12px; font-weight: 600;
+  }
+  .usage-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ghost); }
+  .usage-dot.used { background: var(--border); }
+  .tarot-card {
+    background: linear-gradient(135deg, var(--bg2), var(--panel));
+    border: 2px solid var(--border); border-radius: 10px; padding: 12px;
+    transition: all .3s; cursor: pointer;
+  }
+  .tarot-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(155,89,182,0.3); }
+  .tarot-card.drawn { border-color: var(--ghost); box-shadow: 0 0 16px rgba(155,89,182,0.4); }
+
+  .consumable-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px; transition: all .25s;
+  }
+  .consumable-card.exhausted { opacity: 0.5; filter: grayscale(0.8); border-color: var(--accent); }
+  .consumable-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: var(--gold);
+    box-shadow: 0 0 6px rgba(241,196,15,0.5); transition: all .3s;
+  }
+  .consumable-dot.used { background: var(--border); box-shadow: none; }
+
+  /* Room cards */
+  .room-card {
+    background: var(--bg2);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    transition: all .3s;
+    position: relative;
+  }
+  .room-card.ghost-room {
+    border-color: var(--accent2);
+    box-shadow: 0 0 20px rgba(46,204,113,0.3);
+    background: linear-gradient(135deg, rgba(46,204,113,0.08), var(--bg2));
+  }
+  .room-card.eliminated-room {
+    opacity: 0.4;
+    filter: grayscale(0.7);
+    border-color: var(--accent);
+  }
+  .room-card.confirmed-room {
+    border-color: var(--ghost);
+    box-shadow: 0 0 24px rgba(155,89,182,0.4);
+    background: linear-gradient(135deg, rgba(155,89,182,0.15), var(--bg2));
+  }
+  .room-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--room);
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .room-status {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 4px 10px;
-    border-radius: 12px;
-    background: rgba(155,89,182,0.2);
-    border: 1px solid var(--ghost);
-    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
     font-weight: 600;
-  }
-  .usage-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--ghost);
-  }
-  .usage-dot.used {
-    background: var(--border);
-  }
-  .tarot-card {
-    background: linear-gradient(135deg, var(--bg2), var(--panel));
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    transition: all .3s;
-    cursor: pointer;
-  }
-  .tarot-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(155,89,182,0.3);
-  }
-  .tarot-card.drawn {
-    border-color: var(--ghost);
-    box-shadow: 0 0 16px rgba(155,89,182,0.4);
-  }
-
-  .consumable-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px;
-    transition: all .25s;
-  }
-  .consumable-card.exhausted {
-    opacity: 0.5;
-    filter: grayscale(0.8);
-    border-color: var(--accent);
-  }
-  .consumable-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 6px rgba(241,196,15,0.5);
-    transition: all .3s;
-  }
-  .consumable-dot.used {
-    background: var(--border);
-    box-shadow: none;
   }
 
   @media (max-width: 640px) {
     .tab-btn { padding: 8px 12px; font-size: 13px; }
     .evidence-chip { padding: 8px 12px; font-size: 12px; }
+    .evidence-chip.sm { padding: 5px 8px; font-size: 10px; }
     .ghost-card { padding: 12px; }
     .btn { padding: 8px 12px; font-size: 13px; }
     .dice { width: 70px; height: 70px; font-size: 36px; }
     h1.creepy { font-size: 2.5rem !important; }
     .panel { padding: 14px !important; }
     .cursed-item { padding: 12px; }
+    .room-card { padding: 12px; }
   }
 </style>
 </head>
@@ -371,14 +270,16 @@
     <button class="tab-btn" data-tab="rules">📜 Правила</button>
   </nav>
 
+  <!-- ASSISTANT TAB -->
   <section id="tab-assistant" class="tab-content">
+    <!-- Global evidence -->
     <div class="grid md:grid-cols-3 gap-4">
       <div class="panel p-4 md:p-5 md:col-span-2">
         <h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2">
-          <span style="color: var(--accent2);">●</span> Улики
+          <span style="color: var(--accent2);">●</span> Глобальные улики
         </h2>
         <p class="text-xs mb-3" style="color: var(--muted);">
-          Клик — найдена (зелёный). Повторный клик — исключена (красный). Ещё раз — сброс.
+          Общий список улик. Клик — найдена (зелёный). Повторный клик — исключена (красный). Ещё раз — сброс.
         </p>
         <div id="evidenceList" class="flex flex-wrap gap-2"></div>
         <div class="flex gap-2 mt-4 flex-wrap">
@@ -403,6 +304,10 @@
             <span style="color: var(--muted);">Возможных призраков:</span>
             <span id="statPossible" class="font-bold">0</span>
           </div>
+          <div class="flex justify-between">
+            <span style="color: var(--muted);">Комнат призрака:</span>
+            <span id="statRooms" class="font-bold" style="color: var(--room);">0</span>
+          </div>
           <div class="pt-3 border-t" style="border-color: var(--border);">
             <div id="possibleGhosts" class="space-y-1"></div>
           </div>
@@ -410,12 +315,40 @@
       </div>
     </div>
 
+    <!-- ROOMS SECTION -->
+    <div class="mt-5">
+      <div class="panel p-4 md:p-5">
+        <div class="flex justify-between items-center mb-3 flex-wrap gap-2">
+          <h2 class="text-lg md:text-xl font-bold flex items-center gap-2">
+            <span style="color: var(--room);">●</span> Комнаты
+          </h2>
+          <div class="flex gap-2">
+            <button class="btn btn-primary" onclick="addRoom()">+ Добавить комнату</button>
+            <button class="btn" onclick="resetRooms()">↺ Сброс</button>
+          </div>
+        </div>
+        <p class="text-xs mb-3" style="color: var(--muted);">
+          Привязывайте улики к комнатам, где они были найдены. Комнаты, где все улики совместимы с призраком, подсвечиваются зелёным. Комнаты с несовместимыми уликами — красным.
+        </p>
+
+        <!-- Room analysis summary -->
+        <div id="roomSummary" class="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-2"></div>
+
+        <div id="roomsList" class="space-y-3"></div>
+        <div id="roomsEmpty" class="text-center py-6 text-sm" style="color: var(--muted);">
+          Добавьте комнаты по мере исследования локации
+        </div>
+      </div>
+    </div>
+
+    <!-- Ghosts grid -->
     <div class="mt-5">
       <h2 class="text-lg md:text-xl font-bold mb-3">Возможные призраки</h2>
       <div id="ghostsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
     </div>
   </section>
 
+  <!-- GHOSTS TAB -->
   <section id="tab-ghosts" class="tab-content hidden">
     <div class="panel p-4 mb-4">
       <input type="text" id="ghostSearch" placeholder="Поиск призрака..." class="w-full">
@@ -423,12 +356,11 @@
     <div id="ghostsFullList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
   </section>
 
+  <!-- CURSED ITEMS TAB -->
   <section id="tab-cursed" class="tab-content hidden">
     <div class="panel p-4 md:p-5 mb-4">
       <h2 class="text-lg md:text-xl font-bold mb-3">🔮 Проклятые предметы</h2>
-      <p class="text-xs mb-3" style="color: var(--muted);">
-        Выберите предмет, который вы нашли в ходе расследования
-      </p>
+      <p class="text-xs mb-3" style="color: var(--muted);">Выберите предмет, который вы нашли в ходе расследования</p>
       <div class="flex gap-2 mb-3">
         <button class="btn btn-primary flex-1" onclick="randomCursedItem()">🎲 Случайный предмет</button>
         <button class="btn" onclick="resetCursedItem()">↺ Сброс</button>
@@ -441,10 +373,10 @@
       </div>
       <div id="randomItemResult" class="mt-3 text-center text-sm"></div>
     </div>
-
     <div id="cursedItemsList" class="space-y-4"></div>
   </section>
 
+  <!-- GAME TAB -->
   <section id="tab-game" class="tab-content hidden">
     <div class="grid lg:grid-cols-3 gap-4">
       <div class="panel p-4 lg:col-span-2">
@@ -524,16 +456,15 @@
     </div>
   </section>
 
+  <!-- RULES TAB -->
   <section id="tab-rules" class="tab-content hidden">
     <div class="panel p-5 md:p-6">
       <h2 class="creepy text-2xl md:text-3xl mb-4" style="color: var(--accent);">Правила игры</h2>
-
       <div class="space-y-5 text-sm leading-relaxed">
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent2);">🎯 Цель</h3>
           <p>Охотники должны найти улики, которые помогут правильно определить тип Призрака и эвакуироваться через карточку "Фургон" до того, как все оставшиеся в живых охотники потеряют рассудок.</p>
         </div>
-
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent2);">🎭 Роли</h3>
           <div class="space-y-2">
@@ -547,7 +478,6 @@
             </div>
           </div>
         </div>
-
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent2);">⚙️ Подготовка</h3>
           <div class="space-y-2">
@@ -584,7 +514,6 @@
             </div>
           </div>
         </div>
-
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent2);">📊 Ключевые понятия</h3>
           <div class="space-y-2">
@@ -622,66 +551,25 @@
             </div>
           </div>
         </div>
-
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent2);">🔄 Ход раунда</h3>
-          <div class="space-y-2">
-            <p><b>Фазы:</b> Событие → Фаза охотников → Фаза Призрака → Проверка Охоты → Охота (если началась)</p>
-            
-            <div>
-              <h4 class="font-semibold mb-1">Событие</h4>
-              <p>Тяните 1 карту события.</p>
-            </div>
-
-            <div>
-              <h4 class="font-semibold mb-1">Фаза охотников</h4>
-              <p>У каждого охотника 2 действия.</p>
-              <h5 class="font-semibold mt-2 mb-1">Действия:</h5>
-              <ul class="list-disc list-inside ml-4 space-y-1">
-                <li><b>Перейти</b> – На 1 соседнюю комнату</li>
-                <li><b>Обмен снаряжения</b> – Бросьте d6 кубик. При ≥ 4 можно обменять 1 снаряжение на случайное из колоды. При успешном обмене +1 к уровню шума.</li>
-                <li><b>Искать</b> – Бросьте d6 кубик. При ≥ 4 вытяните и разыграйте событие.</li>
-                <li><b>Использовать снаряжение</b> – Бросьте d6 кубик. При ≥ 4 сыграйте карту и выполните эффект. При успешном использовании +1 к уровню шума.</li>
-                <li><b>Обмен</b> – Передайте 1 карту снаряжения охотнику в той же или соседней комнате.</li>
-              </ul>
-              <p class="mt-2">Если у вас на руке меньше 2 карт, то вы можете добрать снаряжение в руку не использовав действие в свой ход.</p>
-            </div>
-
-            <div>
-              <h4 class="font-semibold mb-1">Правила перемещения</h4>
-              <ul class="list-disc list-inside ml-4 space-y-1">
-                <li>1 действие = 1 комната по двери. Хотите на 2 – тратьте 2 действия. Перемещение не добавляет уровни шума.</li>
-                <li>Внутри комнаты перемещаться не нужно: вся комната – одна зона.</li>
-                <li>Закрытые двери (событие) охотники не перемещаются до следующего раунда.</li>
-                <li>В комнате может стоять любое количество охотников (некоторые призраки очень сильно не любят столпотворения).</li>
-                <li>Принудительное перемещение по эффектам карт/событий не тратят действий, но соблюдают все ограничения.</li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 class="font-semibold mb-1">Фаза призрака</h4>
-              <p>Призрак 1 раз в три хода берет Снаряжение мертвых и может сыграть его до начала проверки охоты (в начале игры призрак не имеет Снаряжение мертвых и может взять первую карту с 4 раунда).</p>
-            </div>
-
-            <div>
-              <h4 class="font-semibold mb-1">Проверка охоты</h4>
-              <p>Бросьте d6 кубик. При ≥ 5 начинается охота (Некоторые призраки имеют другие значения для успешной проверки охоты).</p>
-            </div>
-
-            <div>
-              <h4 class="font-semibold mb-1">Охота</h4>
-              <p>Цель охоты – Наиболее шумный охотник. При равенстве – тот, у кого ниже рассудок.</p>
-              <p>При новом равенстве между игроками в равенстве делятся грани кубика. Банши атакует охотника с наименьшим рассудком (игнорируя результат броска).</p>
-              <p><b>Урон охоты</b> – Бросьте d6 кубик, результат броска и будет уроном от охоты (некоторые призраки имеют бонус к атаке по результату броска).</p>
-            </div>
+          <p><b>Фазы:</b> Событие → Фаза охотников → Фаза Призрака → Проверка Охоты → Охота (если началась)</p>
+          <div class="space-y-2 mt-2">
+            <h5 class="font-semibold">Действия охотника:</h5>
+            <ul class="list-disc list-inside ml-4 space-y-1">
+              <li><b>Перейти</b> – На 1 соседнюю комнату</li>
+              <li><b>Обмен снаряжения</b> – Бросьте d6. При ≥ 4 обменять 1 снаряжение на случайное из колоды. +1 к шуму.</li>
+              <li><b>Искать</b> – Бросьте d6. При ≥ 4 вытяните и разыграйте событие.</li>
+              <li><b>Использовать снаряжение</b> – Бросьте d6. При ≥ 4 сыграйте карту. +1 к шуму.</li>
+              <li><b>Обмен</b> – Передайте 1 карту охотнику в той же или соседней комнате.</li>
+            </ul>
           </div>
         </div>
-
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent2);">🏆 Победа и поражение</h3>
           <div class="space-y-2">
             <div>
-              <h4 class="font-semibold mb-1">Для победы необходимо выполнить три условия:</h4>
+              <h4 class="font-semibold mb-1">Для победы необходимо:</h4>
               <ol class="list-decimal list-inside ml-4">
                 <li>Минимум 2 подтвержденные улики.</li>
                 <li>Объявлен верный тип Призрака.</li>
@@ -689,148 +577,64 @@
               </ol>
             </div>
             <div>
-              <h4 class="font-semibold mb-1">Поражение – Победа призрака</h4>
+              <h4 class="font-semibold mb-1">Поражение</h4>
               <p>Все охотники достигли уровня рассудка 0.</p>
             </div>
           </div>
         </div>
-
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent);">⚠️ Исключение предметов после использования</h3>
           <ul class="list-disc list-inside ml-4 space-y-1">
-            <li><b>Успокоительное</b> – За игру можно использовать 6 раз, после чего карты должны быть выведены из колоды Снаряжение до конца игры.</li>
-            <li><b>Распятие</b> – За игру можно использовать 2 раза, после чего карты должны быть выведены из колоды Снаряжение до конца игры.</li>
-            <li><b>Благовоние</b> – За игру можно использовать 2 раза, после чего карты должны быть выведены из колоды Снаряжение до конца игры.</li>
+            <li><b>Успокоительное</b> – 6 раз за игру.</li>
+            <li><b>Распятие</b> – 2 раза за игру.</li>
+            <li><b>Благовоние</b> – 2 раза за игру.</li>
           </ul>
         </div>
-
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent);">🔮 Проклятые предметы</h3>
-          <p class="mb-2">В ходе каждой игры вы можете найти проклятый предмет (проклятый предмет выбирается случайным образом при помощи кубика d6). Каждый предмет наделён паранормальными силами, которые могут помочь вам в расследовании.</p>
-          <p class="mb-3">Будьте осторожны: ваш уровень рассудка будет падать при использовании данных вещей. Неаккуратное использование данным предметов может вызвать гибель охотника или спровоцировать Призрака начать охоту, не дожидаясь начала фазы Призрака.</p>
-          
+          <p class="mb-2">В ходе каждой игры вы можете найти проклятый предмет. Каждый предмет наделён паранормальными силами, которые могут помочь в расследовании.</p>
+          <p class="mb-3">Будьте осторожны: ваш уровень рассудка будет падать при использовании данных вещей.</p>
           <div class="space-y-3">
             <div>
               <h4 class="font-semibold mb-1" style="color: var(--ghost);">Доска Уиджи</h4>
-              <p>Используется для спиритических сеансов. Найдя доску Уиджи положите её в руку (занимает 1 ячейку снаряжения). Если охотник имеющий доску Уиджи в своей руке хочет её использовать он должен сообщить в свой ход об этом Ведущему и сказать, что именно он хочет сделать.</p>
-              <p class="mt-2">С помощью доски Уиджи можно:</p>
-              <ul class="list-disc list-inside ml-4 space-y-1 mt-1">
-                <li><b>Узнать 1 улику.</b> Бросьте d6 кубик. При ≥ 5 Ведущий раскрывает 1 любую ещё не раскрытую улику Призрака. Охотник получает 2 урона рассудку.</li>
-                <li><b>Успокоить призрака.</b> Бросьте d6 кубик. При ≥ 5 Призрак пропускает свою фазу и не проводит проверку охоты и охоту (Призрак не может использовать Снаряжение Мертвых в этом раунде). Охотник получает 2 урона рассудку.</li>
+              <ul class="list-disc list-inside ml-4 space-y-1">
+                <li><b>Узнать 1 улику.</b> d6 ≥ 5. Охотник получает 2 урона рассудку. При ≤ 2 — 4 урона.</li>
+                <li><b>Успокоить призрака.</b> d6 ≥ 5. Призрак пропускает фазу и охоту. 2 урона рассудку.</li>
               </ul>
-              <p class="mt-2">При результате броска кубика ≤ 2 охотник получает 4 урона своему рассудку.</p>
-              <p class="mt-1">Не забывайте сказать: "До свидания" чтобы закончить использование доски Уиджи. Если игрок забудет сказать эту фразу Призрак сразу же начинает Охоту при условии удачной Проверке Охоты игнорируя оставшееся ходы охотников в этом раунде.</p>
+              <p class="mt-1 text-xs" style="color:var(--accent);">Не забудьте сказать "До свидания"! Иначе охота.</p>
             </div>
-
             <div>
               <h4 class="font-semibold mb-1" style="color: var(--ghost);">Зачарованное зеркало</h4>
-              <p>Это зеркало овальной формы поможет вам найти комнату, где призрак чаще всего проводит время. Найдя зачарованное зеркало положите её в руку (занимает 1 ячейку снаряжения). Если охотник имеющий доску зачарованное зеркало и в своей руке хочет её использовать он должен сообщить в свой ход об этом Ведущему.</p>
-              <p class="mt-2">Бросьте d6 кубик. При ≥ 5 Ведущий раскрывает комнату Призрака. Охотник получает 4 урона рассудку.</p>
-              <p class="mt-1">Зеркало можно использовать 2 раза за игру, после чего оно разбивается.</p>
+              <p>d6 ≥ 5 — узнать комнату Призрака. 4 урона рассудку. 2 использования.</p>
             </div>
-
             <div>
               <h4 class="font-semibold mb-1" style="color: var(--ghost);">Музыкальная шкатулка</h4>
-              <p>Эта причудливая небольшая музыкальная шкатулка создана исключительно для коммуникации с покойными.</p>
-              <p class="mt-2">Найдя музыкальную шкатулку положите её в руку (занимает 1 ячейку снаряжения). Если охотник имеющий музыкальную шкатулку в своей руке хочет её использовать он должен сообщить в свой ход об этом Ведущему.</p>
-              <p class="mt-1">Бросьте d6 кубик. При результате броска равному 6 Призрак 3 раунда подряд пропускает фазу Призрака включая проверку охоты (Призрак не может использовать Снаряжение Мертвых в этот промежуток). Охотник получает 3 урона рассудку. После успешного использования шкатулка рассыпается.</p>
+              <p>d6 = 6 — Призрак пропускает 3 раунда. 3 урона рассудку. 1 использование.</p>
             </div>
-
             <div>
               <h4 class="font-semibold mb-1" style="color: var(--ghost);">Обезьянья лапка</h4>
-              <p>Легендарная мумифицированная обезьянья лапа. Лапа может выполнить 2 желания за игру. Найдя обезьянью лапку, положите её в руку (занимает 1 ячейку снаряжения). Если охотник имеющий обезьянью лапку в своей руке хочет её использовать он должен сообщить в свой ход об этом Ведущему и сказать, что именно он хочет сделать.</p>
-              <ul class="list-disc list-inside ml-4 space-y-1 mt-2">
-                <li><b>Узнать 1 улику.</b> Бросьте d6 кубик. При ≥ 5 Ведущий раскрывает 1 любую ещё не раскрытую улику Призрака. Охотник получает 2 урона рассудку.</li>
-                <li><b>Воскресить игрока.</b> Бросьте d6 кубик. При ≥ 4 Ведущий воскрешает выбранного охотника (воскрешённый охотник имеет 6 рассудка, 0 шума и не имеет карт снаряжения в руке). Охотник получает 2 урона рассудку.</li>
+              <ul class="list-disc list-inside ml-4 space-y-1">
+                <li><b>Узнать 1 улику.</b> d6 ≥ 5. 2 урона рассудку.</li>
+                <li><b>Воскресить игрока.</b> d6 ≥ 4. 2 урона рассудку.</li>
               </ul>
+              <p class="mt-1">2 желания за игру.</p>
             </div>
-
             <div>
               <h4 class="font-semibold mb-1" style="color: var(--ghost);">Карты Таро</h4>
-              <p>Эти мистические карты – наша самая интригующая находка за всё время проведения расследований. Найдя карты Таро, положите её в руку (занимает 1 ячейку снаряжения). Если охотник имеющий карты Таро в своей руке хочет её использовать он должен сообщить в свой ход об этом Ведущему. После чего охотник вытягивает по 1 карте из колоды. Можно остановиться как на 1, так и вытягивать абсолютно все карты из колоды.</p>
-              
-              <h5 class="font-semibold mt-3 mb-2">Значения и эффекты карт Таро:</h5>
-              <div class="space-y-2 text-xs">
-                <div class="p-2 rounded" style="background: rgba(255,215,0,0.1); border-left: 3px solid gold;">
-                  <b>Солнце (The Sun)</b> – Цвет пламени: Жёлтый<br>
-                  Эффект: Полностью восстанавливает рассудок охотника.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(255,255,255,0.1); border-left: 3px solid white;">
-                  <b>Луна (The Moon)</b> – Цвет пламени: Белый<br>
-                  Эффект: Мгновенно роняет рассудок охотника до 1.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(128,0,128,0.1); border-left: 3px solid purple;">
-                  <b>Смерть (Death)</b> – Цвет пламени: Фиолетовый<br>
-                  Эффект: Запускает Охоту без проверки.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(0,255,0,0.1); border-left: 3px solid green;">
-                  <b>Повешенный (The Hanged Man)</b> – Цвет пламени: Зелёный (при удаче) или Красный (при неудаче)<br>
-                  Эффект: Прибавляет 4 рассудка при зелёном или отнимает 4 рассудка при красном.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(0,0,255,0.1); border-left: 3px solid blue;">
-                  <b>Башня (The Tower)</b> – Цвет пламени: Синий<br>
-                  Эффект: Призрак в этом раунде пропускает свою фазу и проверку Охоты.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(135,206,235,0.1); border-left: 3px solid lightblue;">
-                  <b>Отшельник (The Hermit)</b> – Цвет пламени: Светло-голубой<br>
-                  Эффект: Урон призрака снижается на половину на 2 охоты.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(255,255,224,0.1); border-left: 3px solid lightyellow;">
-                  <b>Верховная Жрица (The High Priestess)</b> – Цвет пламени: Светло-жёлтый<br>
-                  Эффект: Воскрешает 1 игрока (на выбор тянувшего карту) игрока.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(255,105,180,0.1); border-left: 3px solid pink;">
-                  <b>Дьявол (The Devil)</b> – Цвет пламени: Розовый/Красный<br>
-                  Эффект: Отнимает по 1 рассудок у всех игроков.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(128,0,128,0.1); border-left: 3px solid purple;">
-                  <b>Шут (The Fool)</b> – Цвет пламени: Фиолетовый отсвет, сменяющийся на пепел<br>
-                  Эффект: Не имеет.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(0,255,0,0.1); border-left: 3px solid green;">
-                  <b>Колесо Фортуны (The Wheel of Fortune)</b> – Цвет пламени: Зеленое пламя<br>
-                  Эффект: Добавляет 2 рассудка.
-                </div>
-                <div class="p-2 rounded" style="background: rgba(255,0,0,0.1); border-left: 3px solid red;">
-                  <b>Колесо Фортуны (The Wheel of Fortune)</b> – Цвет пламени: Красное пламя<br>
-                  Эффект: Отнимает 2 рассудка.
-                </div>
-              </div>
+              <p>11 карт с различными эффектами: Солнце, Луна, Смерть, Повешенный, Башня, Отшельник, Верховная Жрица, Дьявол, Шут, Колесо Фортуны (+), Колесо Фортуны (-).</p>
             </div>
           </div>
         </div>
-
         <div>
           <h3 class="text-base md:text-lg font-bold mb-2" style="color: var(--accent2);">🔍 Доказательства</h3>
-          <div class="space-y-2">
-            <div>
-              <h4 class="font-semibold mb-1">ЭМП</h4>
-              <p>Получите успешное считывание с EMF-детектора</p>
-            </div>
-            <div>
-              <h4 class="font-semibold mb-1">Лазерный проектор</h4>
-              <p>Станьте свидетелем призрачного помехового свечения в огнях проектора. D.O.T.S через камеры в фургоне</p>
-            </div>
-            <div>
-              <h4 class="font-semibold mb-1">Ультрафиолет</h4>
-              <p>Обнаружьте отпечатки пальцев, ладоней или следы при помощи УФ-фонарика</p>
-            </div>
-            <div>
-              <h4 class="font-semibold mb-1">Минусовая температура</h4>
-              <p>Получите успешное считывание на термометре</p>
-            </div>
-            <div>
-              <h4 class="font-semibold mb-1">Призрачный огонёк</h4>
-              <p>Увидьте плавающие орбы на видео через камеры в фургоне</p>
-            </div>
-            <div>
-              <h4 class="font-semibold mb-1">Записи в блокноте</h4>
-              <p>Заставьте призрака написать в Книге Писания, которую вы положили</p>
-            </div>
-            <div>
-              <h4 class="font-semibold mb-1">Радиоприёмник</h4>
-              <p>Получите успешное считывание в Spirit Box после вопроса призраку</p>
-            </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="p-2 rounded" style="background:var(--bg2);"><b>ЭМП</b> — считывание с EMF-детектора</div>
+            <div class="p-2 rounded" style="background:var(--bg2);"><b>Лазерный проектор</b> — D.O.T.S через камеры</div>
+            <div class="p-2 rounded" style="background:var(--bg2);"><b>Ультрафиолет</b> — отпечатки УФ-фонариком</div>
+            <div class="p-2 rounded" style="background:var(--bg2);"><b>Минусовая температура</b> — считывание термометра</div>
+            <div class="p-2 rounded" style="background:var(--bg2);"><b>Призрачный огонёк</b> — орбы через камеры</div>
+            <div class="p-2 rounded" style="background:var(--bg2);"><b>Записи в блокноте</b> — Книга Писания</div>
+            <div class="p-2 rounded" style="background:var(--bg2);"><b>Радиоприёмник</b> — Spirit Box</div>
           </div>
         </div>
       </div>
@@ -840,23 +644,18 @@
 </div>
 
 <div id="ghostModal" class="modal-bg hidden" onclick="if(event.target===this)closeGhostModal()">
-  <div class="modal">
-    <div id="ghostModalContent"></div>
-  </div>
+  <div class="modal"><div id="ghostModalContent"></div></div>
 </div>
-
 <div id="cursedModal" class="modal-bg hidden" onclick="if(event.target===this)closeCursedModal()">
-  <div class="modal">
-    <div id="cursedModalContent"></div>
-  </div>
+  <div class="modal"><div id="cursedModalContent"></div></div>
 </div>
 
 <script>
+// ============ TELEGRAM WEB APP ============
 const tg = window.Telegram?.WebApp;
 if (tg) {
   tg.ready();
   tg.expand();
-  
   if (tg.themeParams) {
     document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#0a0a0f');
     document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#e5e5ec');
@@ -866,132 +665,59 @@ if (tg) {
   }
 }
 
-const EVIDENCE = [
-  'ЭМП',
-  'Лазерный проектор',
-  'Ультрафиолет',
-  'Минусовая температура',
-  'Призрачный огонёк',
-  'Записи в блокноте',
-  'Радиоприёмник'
-];
+// ============ DATA ============
+const EVIDENCE = ['ЭМП','Лазерный проектор','Ультрафиолет','Минусовая температура','Призрачный огонёк','Записи в блокноте','Радиоприёмник'];
 
 const GHOSTS = [
-  { name: 'Асванг', evidence: ['Минусовая температура','Записи в блокноте','Лазерный проектор'],
-    feature: 'Заметив игрока(ов) с уровнем шума ≥ 4 атакует поочередно каждого игрока.' },
-  { name: 'Банши', evidence: ['Ультрафиолет','Призрачный огонёк','Лазерный проектор'],
-    feature: 'В начале игры Ведущий тайно выбирает 1 охотника избранной жертвой. До смерти выбранной жертвы Призрак может атаковать другую цель только при броске кубика ≥ 5.' },
-  { name: 'Дайан', evidence: ['ЭМП','Призрачный огонёк','Радиоприёмник'],
-    feature: 'Если в комнате ≥ 2 игроков, призрак получает возможность начать охоту при броске кубика ≥ 3.' },
-  { name: 'Дейльдегаст', evidence: ['ЭМП','Записи в блокноте','Лазерный проектор'],
-    feature: 'Первые 5 раундов для начала охоты призрака бросок кубика должен быть ≥ 2. На 6 и далее раундах для начала охоты призрака бросок кубика должен быть ≥ 4.' },
-  { name: 'Демон', evidence: ['Ультрафиолет','Записи в блокноте','Минусовая температура'],
-    feature: 'Для начала охоты результат броска кубика должен быть ≥ 4. Демоны боятся распятия и будут менее агрессивны, если оно будет расположено на локации. При наличии выложенного в любую карту локации распятия для начала охоты результат броска кубика должен быть 6.' },
-  { name: 'Деоген', evidence: ['Радиоприёмник','Записи в блокноте','Лазерный проектор'],
-    feature: 'Деоген мастерски улавливает присутствие живых для начала охоты бросок кубика должен быть ≥ 2, но атакует только тех, у кого уровень шума ≥ 2. Тех, у кого уровень шума ниже игнорирует при охоте.' },
-  { name: 'Галлу', evidence: ['ЭМП','Ультрафиолет','Радиоприёмник'],
-    feature: 'Использование защитного оборудования приводит призрака в ярость. В состоянии ярости призрак игнорирует результат броска кубика для начала охоты и всегда начинает охоту.' },
-  { name: 'Горё', evidence: ['ЭМП','Ультрафиолет','Лазерный проектор'],
-    feature: 'Горё будет прятаться от камер, если рядом кто-то есть. Доказательство Лазерный проектор можно заметить исключительно из фургона. Горё редко уходит далеко от своего места смерти. Призрак перемещается исключительно на 1 клетку от своей изначальной комнаты.' },
-  { name: 'Ханту', evidence: ['Призрачный огонёк','Радиоприёмник','Ультрафиолет'],
-    feature: 'У Ханту крайне чуткий слух он игнорирует отсутствие уровня шума у игрока при выборе цели охоты, целью является любой игрок.' },
-  { name: 'Джин', evidence: ['ЭМП','Ультрафиолет','Минусовая температура'],
-    feature: 'Если в комнате призрака будет более 3 охотников, то Джин перемещается на 1 локацию в пользу той, в которой будет меньше охотников или не будет вовсе. Раз в 4 хода джин может выключить щиток без карты Снаряжения мертвых.' },
-  { name: 'Кормос', evidence: ['Ультрафиолет','Призрачный огонёк','Минусовая температура'],
-    feature: 'До того, как в комнате призрака окажется ≥ 2 игроков для начала охоты результат броска кубика должен быть ≥ 2. Как только в комнате призрака окажется ≥ 2 игроков для начала охоты результат броска кубика должен быть ≥ 5.' },
-  { name: 'Мара', evidence: ['Радиоприёмник','Призрачный огонёк','Записи в блокноте'],
-    feature: 'Мара будет более агрессивна под покровом темноты. Пока свет в комнате призрака не включен для начала охоты бросок кубика должен быть ≥ 3.' },
-  { name: 'Морой', evidence: ['Радиоприёмник','Записи в блокноте','Минусовая температура'],
-    feature: 'Первые 3 раунда для начала охоты призрака бросок кубика должен быть ≥ 5. На 4-5-6 раунды ≥ 4. На 6 и далее раундах для начала охоты призрака бросок кубика должен быть ≥ 2.' },
-  { name: 'Мюлинг', evidence: ['ЭМП','Ультрафиолет','Записи в блокноте'],
-    feature: 'При равенстве уровня шума между охотниками Мюлинг атакует обоих, но в половину результата броска кубика.' },
-  { name: 'Обакэ', evidence: ['ЭМП','Ультрафиолет','Призрачный огонёк'],
-    feature: 'До того, как в комнате призрака окажется ≤ 2 игроков для начала охоты результат броска кубика должен быть ≥ 5. Как только в комнате призрака окажется ≥ 3 игроков для начала охоты результат броска кубика должен быть ≥ 2.' },
-  { name: 'Обамбо', evidence: ['Записи в блокноте','Ультрафиолет','Лазерный проектор'],
-    feature: 'Через каждый 2 раунда бросается кубик. Если результат ≥ 3, то для начала охоты на этот и следующий раунд бросок кубика должен быть ≥ 2. Если результат ≤ 3, то для начала охоты бросок кубика должен быть ≥ 5.' },
-  { name: 'Они', evidence: ['ЭМП','Минусовая температура','Лазерный проектор'],
-    feature: 'Материализуясь при охоте призрак наносит 1 урона всем, кто находится в комнате призрака до начала охоты если результат броска кубика ≥ 4. Призрак не меняет свою комнату.' },
-  { name: 'Онрё', evidence: ['Радиоприёмник','Призрачный огонёк','Минусовая температура'],
-    feature: 'При выключении света призрак сразу же начинает охоту.' },
-  { name: 'Фантом', evidence: ['Радиоприёмник','Ультрафиолет','Лазерный проектор'],
-    feature: 'Материализуясь при охоте призрак наносит 1 урона всем, кто находится в комнате призрака до начала охоты.' },
-  { name: 'Полтергейст', evidence: ['Радиоприёмник','Ультрафиолет','Записи в блокноте'],
-    feature: 'Раз в три раунда Призрак может выключить щиток без карты Снаряжения мертвых.' },
-  { name: 'Райдзю', evidence: ['ЭМП','Призрачный огонёк','Лазерный проектор'],
-    feature: 'Райдзю может отключить весь свет один раз в три раунда.' },
-  { name: 'Ревенант', evidence: ['Призрачный огонёк','Записи в блокноте','Минусовая температура'],
-    feature: 'Ревенант может сменить комнату один раз в три раунда без соответствующей карты снаряжения.' },
-  { name: 'Тень', evidence: ['ЭМП','Записи в блокноте','Минусовая температура'],
-    feature: 'Тень боится света. Если в комнате призрака включен свет, то для начала охоты результат броска кубика должен быть 6.' },
-  { name: 'Дух', evidence: ['ЭМП','Радиоприёмник','Записи в блокноте'],
-    feature: 'Наносит 1 урона тем игрокам, кто находится в комнате призрака ≥ 3 раундов.' },
-  { name: 'Тайэ', evidence: ['Призрачный огонёк','Записи в блокноте','Лазерный проектор'],
-    feature: 'Тайэ проворно реагирует на ваше прибытие начиная активно защищаться. При броске кубика ≥ 6 производится повторная атака. Урон повторной атаки равен половине результат броска кубика с округлением в меньшую сторону.' },
-  { name: 'Мимик', evidence: ['Радиоприёмник','Ультрафиолет','Минусовая температура'],
-    feature: 'Этот вид призрака может имитировать ложное доказательство "Призрачный огонёк".' },
-  { name: 'Близнецы', evidence: ['ЭМП','Радиоприёмник','Минусовая температура'],
-    feature: 'При броске кубика 6 охота проводиться поочередно каждым из близнецов.' },
-  { name: 'Мираж', evidence: ['ЭМП','Радиоприёмник','Лазерный проектор'],
-    feature: 'Мираж способен начать атаку при результате кубика ≥ 3.' },
-  { name: 'Ёкай', evidence: ['Радиоприёмник','Призрачный огонёк','Лазерный проектор'],
-    feature: 'Призрак, которого манит человеческий голос. Данный вид обычно обитает в домах, где раньше жили семьи.' },
-  { name: 'Юрэй', evidence: ['Призрачный огонёк','Минусовая температура','Лазерный проектор'],
-    feature: 'Юрей всегда наносит +1 дополнительный урон от результата броска кубика.' }
+  { name: 'Асванг', evidence: ['Минусовая температура','Записи в блокноте','Лазерный проектор'], feature: 'Заметив игрока(ов) с уровнем шума ≥ 4 атакует поочередно каждого игрока.' },
+  { name: 'Банши', evidence: ['Ультрафиолет','Призрачный огонёк','Лазерный проектор'], feature: 'В начале игры Ведущий тайно выбирает 1 охотника избранной жертвой. До смерти выбранной жертвы Призрак может атаковать другую цель только при броске кубика ≥ 5.' },
+  { name: 'Дайан', evidence: ['ЭМП','Призрачный огонёк','Радиоприёмник'], feature: 'Если в комнате ≥ 2 игроков, призрак получает возможность начать охоту при броске кубика ≥ 3.' },
+  { name: 'Дейльдегаст', evidence: ['ЭМП','Записи в блокноте','Лазерный проектор'], feature: 'Первые 5 раундов для начала охоты призрака бросок кубика должен быть ≥ 2. На 6 и далее раундах для начала охоты призрака бросок кубика должен быть ≥ 4.' },
+  { name: 'Демон', evidence: ['Ультрафиолет','Записи в блокноте','Минусовая температура'], feature: 'Для начала охоты результат броска кубика должен быть ≥ 4. Демоны боятся распятия. При наличии распятия для начала охоты результат броска кубика должен быть 6.' },
+  { name: 'Деоген', evidence: ['Радиоприёмник','Записи в блокноте','Лазерный проектор'], feature: 'Для начала охоты бросок кубика должен быть ≥ 2, но атакует только тех, у кого уровень шума ≥ 2.' },
+  { name: 'Галлу', evidence: ['ЭМП','Ультрафиолет','Радиоприёмник'], feature: 'Использование защитного оборудования приводит призрака в ярость. В состоянии ярости призрак всегда начинает охоту.' },
+  { name: 'Горё', evidence: ['ЭМП','Ультрафиолет','Лазерный проектор'], feature: 'Горё будет прятаться от камер, если рядом кто-то есть. D.O.T.S можно заметить исключительно из фургона. Перемещается на 1 клетку от своей изначальной комнаты.' },
+  { name: 'Ханту', evidence: ['Призрачный огонёк','Радиоприёмник','Ультрафиолет'], feature: 'У Ханту крайне чуткий слух — игнорирует отсутствие уровня шума, целью является любой игрок.' },
+  { name: 'Джин', evidence: ['ЭМП','Ультрафиолет','Минусовая температура'], feature: 'Если в комнате призрака более 3 охотников, перемещается. Раз в 4 хода может выключить щиток без карты.' },
+  { name: 'Кормос', evidence: ['Ультрафиолет','Призрачный огонёк','Минусовая температура'], feature: 'До ≥ 2 игроков в комнате — охота при ≥ 2. После ≥ 2 игроков — охота при ≥ 5.' },
+  { name: 'Мара', evidence: ['Радиоприёмник','Призрачный огонёк','Записи в блокноте'], feature: 'Пока свет в комнате призрака не включен для начала охоты бросок кубика должен быть ≥ 3.' },
+  { name: 'Морой', evidence: ['Радиоприёмник','Записи в блокноте','Минусовая температура'], feature: 'Раунды 1-3: охота при ≥ 5. Раунды 4-6: ≥ 4. С 6 раунда: ≥ 2.' },
+  { name: 'Мюлинг', evidence: ['ЭМП','Ультрафиолет','Записи в блокноте'], feature: 'При равенстве уровня шума между охотниками атакует обоих, но в половину результата броска кубика.' },
+  { name: 'Обакэ', evidence: ['ЭМП','Ультрафиолет','Призрачный огонёк'], feature: 'До ≤ 2 игроков — охота при ≥ 5. При ≥ 3 игроках — охота при ≥ 2.' },
+  { name: 'Обамбо', evidence: ['Записи в блокноте','Ультрафиолет','Лазерный проектор'], feature: 'Через каждый 2 раунда бросается кубик. ≥ 3 — охота при ≥ 2. ≤ 3 — охота при ≥ 5.' },
+  { name: 'Они', evidence: ['ЭМП','Минусовая температура','Лазерный проектор'], feature: 'При охоте наносит 1 урон всем в своей комнате если бросок ≥ 4. Не меняет комнату.' },
+  { name: 'Онрё', evidence: ['Радиоприёмник','Призрачный огонёк','Минусовая температура'], feature: 'При выключении света призрак сразу же начинает охоту.' },
+  { name: 'Фантом', evidence: ['Радиоприёмник','Ультрафиолет','Лазерный проектор'], feature: 'При материализации во время охоты наносит 1 урон всем в своей комнате.' },
+  { name: 'Полтергейст', evidence: ['Радиоприёмник','Ультрафиолет','Записи в блокноте'], feature: 'Раз в три раунда может выключить щиток без карты Снаряжения мертвых.' },
+  { name: 'Райдзю', evidence: ['ЭМП','Призрачный огонёк','Лазерный проектор'], feature: 'Может отключить весь свет один раз в три раунда.' },
+  { name: 'Ревенант', evidence: ['Призрачный огонёк','Записи в блокноте','Минусовая температура'], feature: 'Может сменить комнату один раз в три раунда без карты снаряжения.' },
+  { name: 'Тень', evidence: ['ЭМП','Записи в блокноте','Минусовая температура'], feature: 'Если в комнате призрака включен свет, для начала охоты бросок должен быть 6.' },
+  { name: 'Дух', evidence: ['ЭМП','Радиоприёмник','Записи в блокноте'], feature: 'Наносит 1 урон игрокам, находящимся в его комнате ≥ 3 раундов.' },
+  { name: 'Тайэ', evidence: ['Призрачный огонёк','Записи в блокноте','Лазерный проектор'], feature: 'При броске ≥ 6 — повторная атака. Урон повторной атаки равен половине результата броска.' },
+  { name: 'Мимик', evidence: ['Радиоприёмник','Ультрафиолет','Минусовая температура'], feature: 'Может имитировать ложное доказательство "Призрачный огонёк".' },
+  { name: 'Близнецы', evidence: ['ЭМП','Радиоприёмник','Минусовая температура'], feature: 'При броске 6 охота проводится поочередно каждым из близнецов.' },
+  { name: 'Мираж', evidence: ['ЭМП','Радиоприёмник','Лазерный проектор'], feature: 'Способен начать атаку при результате кубика ≥ 3.' },
+  { name: 'Ёкай', evidence: ['Радиоприёмник','Призрачный огонёк','Лазерный проектор'], feature: 'Манит человеческий голос. Обитает в домах, где раньше жили семьи.' },
+  { name: 'Юрэй', evidence: ['Призрачный огонёк','Минусовая температура','Лазерный проектор'], feature: 'Всегда наносит +1 дополнительный урон от результата броска кубика.' }
 ];
 
 const CURSED_ITEMS = [
-  {
-    id: 'ouija',
-    name: 'Доска Уиджи',
-    emoji: '🔮',
-    description: 'Используется для спиритических сеансов',
-    maxUses: Infinity,
+  { id: 'ouija', name: 'Доска Уиджи', emoji: '🔮', description: 'Используется для спиритических сеансов', maxUses: Infinity,
     actions: [
       { name: 'Узнать улику', threshold: 5, success: 'Ведущий раскрывает 1 улику', fail: 'Охотник получает 4 урона рассудку', sanityCost: 2 },
       { name: 'Успокоить призрака', threshold: 5, success: 'Призрак пропускает фазу и охоту', fail: 'Охотник получает 4 урона рассудку', sanityCost: 2 }
     ],
-    warning: 'Не забудьте сказать "До свидания"! Иначе призрак начинает охоту!'
-  },
-  {
-    id: 'mirror',
-    name: 'Зачарованное зеркало',
-    emoji: '🪞',
-    description: 'Показывает комнату призрака',
-    maxUses: 2,
-    actions: [
-      { name: 'Узнать комнату', threshold: 5, success: 'Ведущий раскрывает комнату призрака', fail: 'Охотник получает 4 урона рассудку', sanityCost: 4 }
-    ]
-  },
-  {
-    id: 'musicbox',
-    name: 'Музыкальная шкатулка',
-    emoji: '🎵',
-    description: 'Усыпляет призрака на 3 раунда',
-    maxUses: 1,
-    actions: [
-      { name: 'Усыпить призрака', threshold: 6, success: 'Призрак пропускает 3 раунда', fail: 'Охотник получает 3 урона рассудку', sanityCost: 3 }
-    ]
-  },
-  {
-    id: 'paw',
-    name: 'Обезьянья лапка',
-    emoji: '🐒',
-    description: 'Выполняет 2 желания',
-    maxUses: 2,
+    warning: 'Не забудьте сказать "До свидания"! Иначе призрак начинает охоту!' },
+  { id: 'mirror', name: 'Зачарованное зеркало', emoji: '🪞', description: 'Показывает комнату призрака', maxUses: 2,
+    actions: [{ name: 'Узнать комнату', threshold: 5, success: 'Ведущий раскрывает комнату призрака', fail: 'Охотник получает 4 урона рассудку', sanityCost: 4 }] },
+  { id: 'musicbox', name: 'Музыкальная шкатулка', emoji: '🎵', description: 'Усыпляет призрака на 3 раунда', maxUses: 1,
+    actions: [{ name: 'Усыпить призрака', threshold: 6, success: 'Призрак пропускает 3 раунда', fail: 'Охотник получает 3 урона рассудку', sanityCost: 3 }] },
+  { id: 'paw', name: 'Обезьянья лапка', emoji: '🐒', description: 'Выполняет 2 желания', maxUses: 2,
     actions: [
       { name: 'Узнать улику', threshold: 5, success: 'Ведущий раскрывает 1 улику', fail: 'Охотник получает 2 урона рассудку', sanityCost: 2 },
       { name: 'Воскресить игрока', threshold: 4, success: 'Охотник воскрешён (6 рассудка, 0 шума)', fail: 'Охотник получает 2 урона рассудку', sanityCost: 2 }
-    ]
-  },
-  {
-    id: 'tarot',
-    name: 'Карты Таро',
-    emoji: '🃏',
-    description: 'Мистические карты с различными эффектами',
-    maxUses: Infinity,
-    actions: [],
-    isTarot: true
-  }
+    ] },
+  { id: 'tarot', name: 'Карты Таро', emoji: '🃏', description: 'Мистические карты с различными эффектами', maxUses: Infinity, actions: [], isTarot: true }
 ];
 
 const TAROT_CARDS = [
@@ -1010,10 +736,11 @@ const TAROT_CARDS = [
 
 const CONSUMABLES = [
   { id: 'sedative', name: 'Успокоительное', emoji: '💊', description: 'Восстанавливает рассудок охотника', maxUses: 6, color: 'var(--accent2)' },
-  { id: 'crucifix', name: 'Распятие', emoji: '✝️', description: 'Снижает агрессивность призрака (Демон: охота только при 6)', maxUses: 2, color: 'var(--gold)' },
+  { id: 'crucifix', name: 'Распятие', emoji: '✝️', description: 'Снижает агрессивность призрака', maxUses: 2, color: 'var(--gold)' },
   { id: 'incense', name: 'Благовоние', emoji: '🕯️', description: 'Защищает от призрака на время', maxUses: 2, color: 'var(--ghost)' }
 ];
 
+// ============ STATE ============
 let evidenceState = {};
 EVIDENCE.forEach(e => evidenceState[e] = 0);
 
@@ -1024,18 +751,19 @@ let diceHistory = [];
 let isRolling = false;
 
 let cursedItemState = {};
-CURSED_ITEMS.forEach(item => {
-  cursedItemState[item.id] = { uses: 0, tarotDrawn: [] };
-});
-
+CURSED_ITEMS.forEach(item => { cursedItemState[item.id] = { uses: 0, tarotDrawn: [] }; });
 let selectedCursedItem = null;
 
-// consumableState[id].used = сколько раз уже использовано
 let consumableState = {};
-CONSUMABLES.forEach(c => {
-  consumableState[c.id] = { used: 0 };
-});
+CONSUMABLES.forEach(c => { consumableState[c.id] = { used: 0 }; });
 
+// ROOMS STATE
+// rooms: [{id, name, evidence: {ЭМП: 0/1/2, ...}, confirmed: false}]
+// evidence state per room: 0=neutral, 1=found, 2=ruled-out
+let rooms = [];
+let roomIdCounter = 1;
+
+// ============ TABS ============
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1046,6 +774,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
+// ============ EVIDENCE ============
 function renderEvidence() {
   const list = document.getElementById('evidenceList');
   list.innerHTML = '';
@@ -1060,20 +789,22 @@ function renderEvidence() {
       if (tg) tg.HapticFeedback.impactOccurred('light');
       renderEvidence();
       renderGhosts();
+      renderRooms();
       updateStats();
     };
     list.appendChild(chip);
   });
 }
-
 function resetEvidence() {
   EVIDENCE.forEach(e => evidenceState[e] = 0);
   if (tg) tg.HapticFeedback.notificationOccurred('warning');
   renderEvidence();
   renderGhosts();
+  renderRooms();
   updateStats();
 }
 
+// ============ GHOSTS ============
 function getPossibleGhosts() {
   const found = EVIDENCE.filter(e => evidenceState[e] === 1);
   const ruled = EVIDENCE.filter(e => evidenceState[e] === 2);
@@ -1083,21 +814,17 @@ function getPossibleGhosts() {
     return true;
   });
 }
-
 function renderGhosts() {
   const possible = getPossibleGhosts();
   const possibleNames = new Set(possible.map(g => g.name));
   const grid = document.getElementById('ghostsGrid');
   grid.innerHTML = '';
-  
   const sortedGhosts = [...GHOSTS].sort((a, b) => {
-    const aPossible = possibleNames.has(a.name);
-    const bPossible = possibleNames.has(b.name);
-    if (aPossible && !bPossible) return -1;
-    if (!aPossible && bPossible) return 1;
+    const aP = possibleNames.has(a.name), bP = possibleNames.has(b.name);
+    if (aP && !bP) return -1;
+    if (!aP && bP) return 1;
     return 0;
   });
-  
   sortedGhosts.forEach(g => {
     const card = document.createElement('div');
     card.className = 'ghost-card';
@@ -1118,7 +845,6 @@ function renderGhosts() {
     grid.appendChild(card);
   });
 }
-
 function renderFullGhostsList(filter = '') {
   const grid = document.getElementById('ghostsFullList');
   grid.innerHTML = '';
@@ -1137,14 +863,9 @@ function renderFullGhostsList(filter = '') {
     grid.appendChild(card);
   });
 }
-
-document.getElementById('ghostSearch').addEventListener('input', e => {
-  renderFullGhostsList(e.target.value);
-});
-
+document.getElementById('ghostSearch').addEventListener('input', e => renderFullGhostsList(e.target.value));
 function showGhostDetails(g) {
-  const content = document.getElementById('ghostModalContent');
-  content.innerHTML = `
+  document.getElementById('ghostModalContent').innerHTML = `
     <div class="flex justify-between items-start mb-4">
       <h2 class="creepy text-2xl md:text-3xl" style="color: var(--ghost);">${g.name}</h2>
       <button class="btn" onclick="closeGhostModal()">✕</button>
@@ -1157,57 +878,218 @@ function showGhostDetails(g) {
     </div>
     <div>
       <h3 class="font-bold mb-2" style="color: var(--accent);">Особенность:</h3>
-      <p class="text-sm" style="color: var(--text);">${g.feature}</p>
+      <p class="text-sm">${g.feature}</p>
     </div>
   `;
   document.getElementById('ghostModal').classList.remove('hidden');
   if (tg) tg.HapticFeedback.impactOccurred('medium');
 }
+function closeGhostModal() { document.getElementById('ghostModal').classList.add('hidden'); }
 
-function closeGhostModal() {
-  document.getElementById('ghostModal').classList.add('hidden');
+// ============ ROOMS ============
+// Проверка: может ли комната быть комнатой призрака
+// Комната может быть комнатой призрака, если существует хотя бы один призрак,
+// у которого все найденные в комнате улики входят в его профиль,
+// И ни одна из исключённых в комнате улик не входит в его профиль.
+function analyzeRoom(room) {
+  const foundInRoom = EVIDENCE.filter(e => room.evidence[e] === 1);
+  const ruledInRoom = EVIDENCE.filter(e => room.evidence[e] === 2);
+  
+  // Призраки, совместимые с этой комнатой
+  const compatibleGhosts = GHOSTS.filter(g => {
+    // Все найденные в комнате улики должны быть в профиле призрака
+    if (!foundInRoom.every(f => g.evidence.includes(f))) return false;
+    // Ни одна исключённая в комнате улика не должна быть в профиле
+    if (ruledInRoom.some(r => g.evidence.includes(r))) return false;
+    return true;
+  });
+  
+  return {
+    compatibleGhosts,
+    isPossible: compatibleGhosts.length > 0,
+    isConfirmed: room.confirmed,
+    foundCount: foundInRoom.length,
+    ruledCount: ruledInRoom.length
+  };
 }
 
+function addRoom() {
+  if (rooms.length >= 12) {
+    if (tg) tg.HapticFeedback.notificationOccurred('error');
+    return;
+  }
+  const evidence = {};
+  EVIDENCE.forEach(e => evidence[e] = 0);
+  rooms.push({
+    id: roomIdCounter++,
+    name: 'Комната ' + rooms.length + 1,
+    evidence: evidence,
+    confirmed: false
+  });
+  if (tg) tg.HapticFeedback.impactOccurred('light');
+  renderRooms();
+  updateStats();
+}
+
+function removeRoom(id) {
+  rooms = rooms.filter(r => r.id !== id);
+  if (tg) tg.HapticFeedback.impactOccurred('medium');
+  renderRooms();
+  updateStats();
+}
+
+function resetRooms() {
+  rooms = [];
+  roomIdCounter = 1;
+  if (tg) tg.HapticFeedback.notificationOccurred('warning');
+  renderRooms();
+  updateStats();
+}
+
+function changeRoomEvidence(roomId, evidenceName) {
+  const room = rooms.find(r => r.id === roomId);
+  if (!room) return;
+  room.evidence[evidenceName] = (room.evidence[evidenceName] + 1) % 3;
+  if (tg) tg.HapticFeedback.impactOccurred('light');
+  renderRooms();
+  updateStats();
+}
+
+function toggleRoomConfirmed(roomId) {
+  const room = rooms.find(r => r.id === roomId);
+  if (!room) return;
+  room.confirmed = !room.confirmed;
+  if (tg) tg.HapticFeedback.impactOccurred('medium');
+  renderRooms();
+  updateStats();
+}
+
+function renameRoom(roomId, newName) {
+  const room = rooms.find(r => r.id === roomId);
+  if (!room) return;
+  room.name = newName || room.name;
+}
+
+function renderRooms() {
+  const list = document.getElementById('roomsList');
+  const empty = document.getElementById('roomsEmpty');
+  const summary = document.getElementById('roomSummary');
+  
+  if (rooms.length === 0) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    summary.innerHTML = '';
+    return;
+  }
+  
+  empty.classList.add('hidden');
+  
+  // Анализ комнат
+  const analyses = rooms.map(r => ({ room: r, analysis: analyzeRoom(r) }));
+  
+  // Подсчёт
+  const possibleRooms = analyses.filter(a => a.analysis.isPossible && !a.analysis.isConfirmed).length;
+  const confirmedRooms = analyses.filter(a => a.analysis.isConfirmed).length;
+  const eliminatedRooms = analyses.filter(a => !a.analysis.isPossible && !a.analysis.isConfirmed).length;
+  
+  // Summary
+  summary.innerHTML = `
+    <div class="p-3 rounded-lg" style="background:var(--bg2);border:1px solid var(--accent2);">
+      <div class="text-xs" style="color:var(--muted);">Возможных</div>
+      <div class="text-xl font-bold" style="color:var(--accent2);">${possibleRooms}</div>
+    </div>
+    <div class="p-3 rounded-lg" style="background:var(--bg2);border:1px solid var(--ghost);">
+      <div class="text-xs" style="color:var(--muted);">Подтверждённых</div>
+      <div class="text-xl font-bold" style="color:var(--ghost);">${confirmedRooms}</div>
+    </div>
+    <div class="p-3 rounded-lg" style="background:var(--bg2);border:1px solid var(--accent);">
+      <div class="text-xs" style="color:var(--muted);">Исключённых</div>
+      <div class="text-xl font-bold" style="color:var(--accent);">${eliminatedRooms}</div>
+    </div>
+  `;
+  
+  // Сортировка: подтверждённые сверху, потом возможные, потом исключённые
+  const sorted = [...analyses].sort((a, b) => {
+    if (a.analysis.isConfirmed && !b.analysis.isConfirmed) return -1;
+    if (!a.analysis.isConfirmed && b.analysis.isConfirmed) return 1;
+    if (a.analysis.isPossible && !b.analysis.isPossible) return -1;
+    if (!a.analysis.isPossible && b.analysis.isPossible) return 1;
+    return 0;
+  });
+  
+  list.innerHTML = sorted.map(({ room, analysis }) => {
+    const statusClass = room.confirmed ? 'confirmed-room' : (analysis.isPossible ? 'ghost-room' : 'eliminated-room');
+    
+    const statusBadge = room.confirmed 
+      ? '<span class="room-status" style="background:var(--ghost);color:white;">👻 Комната призрака</span>'
+      : (analysis.isPossible 
+        ? `<span class="room-status" style="background:var(--accent2);color:white;">✓ Возможна (${analysis.compatibleGhosts.length} призраков)</span>`
+        : '<span class="room-status" style="background:var(--accent);color:white;">✗ Исключена</span>');
+    
+    return `
+      <div class="room-card ${statusClass}">
+        <div class="flex justify-between items-start mb-3 gap-2 flex-wrap">
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <div class="room-number">${rooms.indexOf(room) + 1}</div>
+            <input type="text" value="${room.name}" 
+                   onchange="renameRoom(${room.id}, this.value)" 
+                   class="font-bold text-sm md:text-base flex-1 min-w-0"
+                   style="background:transparent;border:none;padding:0;">
+          </div>
+          <div class="flex items-center gap-1 flex-wrap">
+            ${statusBadge}
+            <button class="btn text-xs" style="padding:4px 8px;" 
+                    onclick="toggleRoomConfirmed(${room.id})"
+                    title="${room.confirmed ? 'Снять подтверждение' : 'Подтвердить как комнату призрака'}">
+              ${room.confirmed ? '👻' : '🎯'}
+            </button>
+            <button class="btn text-xs" style="padding:4px 8px;" onclick="removeRoom(${room.id})">✕</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1">
+          ${EVIDENCE.map(ev => {
+            const state = room.evidence[ev];
+            const cls = state === 1 ? 'found' : (state === 2 ? 'ruled-out' : '');
+            return `<div class="evidence-chip sm ${cls}" onclick="changeRoomEvidence(${room.id}, '${ev}')">${ev}</div>`;
+          }).join('')}
+        </div>
+        ${analysis.isPossible && analysis.compatibleGhosts.length <= 5 && analysis.compatibleGhosts.length > 0 && !room.confirmed ? `
+          <div class="mt-3 pt-3" style="border-top:1px solid var(--border);">
+            <div class="text-xs mb-1" style="color:var(--muted);">Возможные призраки:</div>
+            <div class="flex flex-wrap gap-1">
+              ${analysis.compatibleGhosts.map(g => `<span class="badge" style="background:rgba(46,204,113,0.15);color:var(--accent2);border:1px solid var(--accent2);">${g.name}</span>`).join('')}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// ============ CURSED ITEMS ============
 function renderCursedItems() {
   const list = document.getElementById('cursedItemsList');
   list.innerHTML = '';
-  
   const sortedItems = [...CURSED_ITEMS].sort((a, b) => {
     if (selectedCursedItem === a.id) return -1;
     if (selectedCursedItem === b.id) return 1;
     return 0;
   });
-  
   sortedItems.forEach(item => {
     const state = cursedItemState[item.id];
     const isExhausted = item.maxUses !== Infinity && state.uses >= item.maxUses;
     const isSelected = selectedCursedItem === item.id;
     const isDimmed = selectedCursedItem !== null && !isSelected;
-    
     const card = document.createElement('div');
     card.className = 'cursed-item';
     if (isSelected) card.classList.add('selected');
     if (isDimmed) card.classList.add('dimmed');
-    if (isExhausted) {
-      card.style.opacity = '0.5';
-      card.style.filter = 'grayscale(1)';
-    }
-    
+    if (isExhausted) { card.style.opacity = '0.5'; card.style.filter = 'grayscale(1)'; }
     let usageHTML = '';
     if (item.maxUses !== Infinity) {
-      const dots = Array(item.maxUses).fill(0).map((_, i) => 
-        `<div class="usage-dot ${i < state.uses ? 'used' : ''}"></div>`
-      ).join('');
-      usageHTML = `
-        <div class="flex justify-between items-center mb-3">
-          <span class="usage-counter">
-            Использований: ${state.uses}/${item.maxUses}
-          </span>
-          <div class="flex gap-1">${dots}</div>
-        </div>
-      `;
+      const dots = Array(item.maxUses).fill(0).map((_, i) => `<div class="usage-dot ${i < state.uses ? 'used' : ''}"></div>`).join('');
+      usageHTML = `<div class="flex justify-between items-center mb-3"><span class="usage-counter">Использований: ${state.uses}/${item.maxUses}</span><div class="flex gap-1">${dots}</div></div>`;
     }
-    
     let actionsHTML = '';
     if (!isExhausted && !item.isTarot) {
       actionsHTML = item.actions.map((action, idx) => `
@@ -1216,37 +1098,27 @@ function renderCursedItems() {
             <span class="font-semibold text-sm">${action.name}</span>
             <span class="badge" style="background:var(--ghost);color:white;">≥ ${action.threshold}</span>
           </div>
-          <p class="text-xs mb-2" style="color:var(--muted);">
-            ✓ ${action.success}<br>
-            ✗ ${action.fail}
-          </p>
-          <button class="btn btn-primary w-full text-xs" onclick="useCursedItem('${item.id}', ${idx})">
-            Использовать
-          </button>
+          <p class="text-xs mb-2" style="color:var(--muted);">✓ ${action.success}<br>✗ ${action.fail}</p>
+          <button class="btn btn-primary w-full text-xs" onclick="useCursedItem('${item.id}', ${idx})">Использовать</button>
         </div>
       `).join('');
     } else if (item.isTarot && !isExhausted) {
       actionsHTML = `
-        <button class="btn btn-primary w-full mb-3" onclick="drawTarotCard('${item.id}')">
-          🃏 Вытянуть карту Таро
-        </button>
+        <button class="btn btn-primary w-full mb-3" onclick="drawTarotCard('${item.id}')">🃏 Вытянуть карту Таро</button>
         <div class="grid grid-cols-2 gap-2">
-          ${TAROT_CARDS.map((card, idx) => {
+          ${TAROT_CARDS.map((tc, idx) => {
             const isDrawn = state.tarotDrawn.includes(idx);
-            return `
-              <div class="tarot-card ${isDrawn ? 'drawn' : ''}" onclick="showTarotDetails(${idx})">
-                <div class="flex items-center gap-2 mb-1">
-                  <div style="width:12px;height:12px;border-radius:50%;background:${card.colorHex};border:1px solid var(--border);"></div>
-                  <span class="font-semibold text-xs">${card.name}</span>
-                </div>
-                <p class="text-xs" style="color:var(--muted);">${card.effect}</p>
+            return `<div class="tarot-card ${isDrawn ? 'drawn' : ''}" onclick="showTarotDetails(${idx})">
+              <div class="flex items-center gap-2 mb-1">
+                <div style="width:12px;height:12px;border-radius:50%;background:${tc.colorHex};border:1px solid var(--border);"></div>
+                <span class="font-semibold text-xs">${tc.name}</span>
               </div>
-            `;
+              <p class="text-xs" style="color:var(--muted);">${tc.effect}</p>
+            </div>`;
           }).join('')}
         </div>
       `;
     }
-    
     card.innerHTML = `
       <div class="cursed-item-content">
         <div class="flex justify-between items-start mb-3">
@@ -1259,15 +1131,13 @@ function renderCursedItems() {
             ${isExhausted ? '<span class="badge" style="background:var(--accent);color:white;">Исчерпан</span>' : ''}
           </div>
         </div>
-        ${usageHTML}
-        ${actionsHTML}
+        ${usageHTML}${actionsHTML}
         ${item.warning ? `<p class="text-xs mt-2 p-2 rounded" style="background:rgba(201,48,44,0.1);border-left:3px solid var(--accent);color:var(--accent);">${item.warning}</p>` : ''}
       </div>
     `;
     list.appendChild(card);
   });
 }
-
 function initManualSelect() {
   const select = document.getElementById('manualItemSelect');
   select.innerHTML = '<option value="">— Выберите предмет —</option>';
@@ -1278,17 +1148,13 @@ function initManualSelect() {
     select.appendChild(option);
   });
 }
-
 function randomCursedItem() {
   const dice = document.getElementById('dice');
   const resultEl = document.getElementById('randomItemResult');
-  
   if (isRolling) return;
   isRolling = true;
-  
   dice.classList.add('rolling');
   if (tg) tg.HapticFeedback.impactOccurred('medium');
-  
   let count = 0;
   const interval = setInterval(() => {
     dice.textContent = Math.floor(Math.random() * 6) + 1;
@@ -1299,86 +1165,56 @@ function randomCursedItem() {
       dice.textContent = result;
       dice.classList.remove('rolling');
       isRolling = false;
-      
-      let itemIndex;
-      if (result <= 5) {
-        itemIndex = result - 1;
-      } else {
-        itemIndex = Math.floor(Math.random() * 5);
-      }
-      
+      let itemIndex = result <= 5 ? result - 1 : Math.floor(Math.random() * 5);
       const item = CURSED_ITEMS[itemIndex];
       selectedCursedItem = item.id;
-      
-      resultEl.innerHTML = `
-        <div class="p-3 rounded-lg" style="background:var(--bg2);border:1px solid var(--ghost);">
-          <span class="text-2xl">${item.emoji}</span>
-          <div class="font-bold mt-1">${item.name}</div>
-          <div class="text-xs mt-1" style="color:var(--muted);">${item.description}</div>
-        </div>
-      `;
-      
+      resultEl.innerHTML = `<div class="p-3 rounded-lg" style="background:var(--bg2);border:1px solid var(--ghost);">
+        <span class="text-2xl">${item.emoji}</span>
+        <div class="font-bold mt-1">${item.name}</div>
+        <div class="text-xs mt-1" style="color:var(--muted);">${item.description}</div>
+      </div>`;
       if (tg) tg.HapticFeedback.notificationOccurred('success');
-      
       document.getElementById('manualItemSelect').value = item.id;
-      
       renderCursedItems();
     }
   }, 70);
 }
-
 function selectManualItem() {
   const select = document.getElementById('manualItemSelect');
   const itemId = select.value;
-  
   if (itemId) {
     selectedCursedItem = itemId;
     const item = CURSED_ITEMS.find(i => i.id === itemId);
-    const resultEl = document.getElementById('randomItemResult');
-    resultEl.innerHTML = `
-      <div class="p-3 rounded-lg" style="background:var(--bg2);border:1px solid var(--ghost);">
-        <span class="text-2xl">${item.emoji}</span>
-        <div class="font-bold mt-1">${item.name}</div>
-        <div class="text-xs mt-1" style="color:var(--muted);">${item.description}</div>
-      </div>
-    `;
+    document.getElementById('randomItemResult').innerHTML = `<div class="p-3 rounded-lg" style="background:var(--bg2);border:1px solid var(--ghost);">
+      <span class="text-2xl">${item.emoji}</span>
+      <div class="font-bold mt-1">${item.name}</div>
+      <div class="text-xs mt-1" style="color:var(--muted);">${item.description}</div>
+    </div>`;
     if (tg) tg.HapticFeedback.impactOccurred('light');
-  } else {
-    resetCursedItem();
-  }
-  
+  } else { resetCursedItem(); }
   renderCursedItems();
 }
-
 function resetCursedItem() {
   selectedCursedItem = null;
-  CURSED_ITEMS.forEach(item => {
-    cursedItemState[item.id] = { uses: 0, tarotDrawn: [] };
-  });
+  CURSED_ITEMS.forEach(item => { cursedItemState[item.id] = { uses: 0, tarotDrawn: [] }; });
   document.getElementById('randomItemResult').innerHTML = '';
   document.getElementById('manualItemSelect').value = '';
   if (tg) tg.HapticFeedback.notificationOccurred('warning');
   renderCursedItems();
 }
-
 async function useCursedItem(itemId, actionIdx) {
   const item = CURSED_ITEMS.find(i => i.id === itemId);
   const action = item.actions[actionIdx];
   const state = cursedItemState[itemId];
-  
   if (item.maxUses !== Infinity && state.uses >= item.maxUses) {
     if (tg) tg.HapticFeedback.notificationOccurred('error');
     return;
   }
-  
   const result = await rollDiceValue();
   if (result === null) return;
-  
   const success = result >= action.threshold;
   state.uses++;
-  
-  const content = document.getElementById('cursedModalContent');
-  content.innerHTML = `
+  document.getElementById('cursedModalContent').innerHTML = `
     <div class="flex justify-between items-start mb-4">
       <h2 class="text-xl font-bold">${item.emoji} ${item.name}</h2>
       <button class="btn" onclick="closeCursedModal()">✕</button>
@@ -1388,36 +1224,24 @@ async function useCursedItem(itemId, actionIdx) {
       <p class="text-sm mb-2">Бросок: <b>${result}</b> ${success ? '≥' : '<'} ${action.threshold}</p>
     </div>
     <div class="p-4 rounded-lg mb-3" style="background:${success ? 'rgba(46,204,113,0.1)' : 'rgba(201,48,44,0.1)'};border:1px solid ${success ? 'var(--accent2)' : 'var(--accent)'};">
-      <p class="font-bold mb-2" style="color:${success ? 'var(--accent2)' : 'var(--accent)'};">
-        ${success ? '✓ Успех!' : '✗ Неудача!'}
-      </p>
+      <p class="font-bold mb-2" style="color:${success ? 'var(--accent2)' : 'var(--accent)'};">${success ? '✓ Успех!' : '✗ Неудача!'}</p>
       <p class="text-sm">${success ? action.success : action.fail}</p>
       <p class="text-xs mt-2" style="color:var(--muted);">Урон рассудку: ${action.sanityCost}</p>
     </div>
     ${item.maxUses !== Infinity ? `<p class="text-xs text-center" style="color:var(--muted);">Использований: ${state.uses}/${item.maxUses}</p>` : ''}
   `;
-  
   document.getElementById('cursedModal').classList.remove('hidden');
   if (tg) tg.HapticFeedback.notificationOccurred(success ? 'success' : 'error');
-  
   renderCursedItems();
 }
-
 function drawTarotCard(itemId) {
   const state = cursedItemState[itemId];
   const available = TAROT_CARDS.map((_, idx) => idx).filter(idx => !state.tarotDrawn.includes(idx));
-  
-  if (available.length === 0) {
-    if (tg) tg.HapticFeedback.notificationOccurred('error');
-    return;
-  }
-  
+  if (available.length === 0) { if (tg) tg.HapticFeedback.notificationOccurred('error'); return; }
   const randomIdx = available[Math.floor(Math.random() * available.length)];
   state.tarotDrawn.push(randomIdx);
-  
   const card = TAROT_CARDS[randomIdx];
-  const content = document.getElementById('cursedModalContent');
-  content.innerHTML = `
+  document.getElementById('cursedModalContent').innerHTML = `
     <div class="flex justify-between items-start mb-4">
       <h2 class="text-xl font-bold">🃏 Карта Таро</h2>
       <button class="btn" onclick="closeCursedModal()">✕</button>
@@ -1434,17 +1258,13 @@ function drawTarotCard(itemId) {
     </div>
     <p class="text-xs text-center" style="color:var(--muted);">Вытянуто карт: ${state.tarotDrawn.length}/${TAROT_CARDS.length}</p>
   `;
-  
   document.getElementById('cursedModal').classList.remove('hidden');
   if (tg) tg.HapticFeedback.notificationOccurred('success');
-  
   renderCursedItems();
 }
-
 function showTarotDetails(idx) {
   const card = TAROT_CARDS[idx];
-  const content = document.getElementById('cursedModalContent');
-  content.innerHTML = `
+  document.getElementById('cursedModalContent').innerHTML = `
     <div class="flex justify-between items-start mb-4">
       <h2 class="text-xl font-bold">🃏 ${card.name}</h2>
       <button class="btn" onclick="closeCursedModal()">✕</button>
@@ -1460,34 +1280,23 @@ function showTarotDetails(idx) {
       </div>
     </div>
   `;
-  
   document.getElementById('cursedModal').classList.remove('hidden');
   if (tg) tg.HapticFeedback.impactOccurred('medium');
 }
-
-function closeCursedModal() {
-  document.getElementById('cursedModal').classList.add('hidden');
-}
+function closeCursedModal() { document.getElementById('cursedModal').classList.add('hidden'); }
 
 // ============ CONSUMABLES ============
 function renderConsumables() {
   const list = document.getElementById('consumablesList');
   list.innerHTML = '';
-  
   CONSUMABLES.forEach(item => {
     const state = consumableState[item.id];
     const isExhausted = state.used >= item.maxUses;
     const remaining = item.maxUses - state.used;
-    
     const card = document.createElement('div');
     card.className = 'consumable-card';
     if (isExhausted) card.classList.add('exhausted');
-    
-    // Точки: закрашиваем те, что УЖЕ использованы
-    const dots = Array(item.maxUses).fill(0).map((_, i) => 
-      `<div class="consumable-dot ${i < state.used ? 'used' : ''}"></div>`
-    ).join('');
-    
+    const dots = Array(item.maxUses).fill(0).map((_, i) => `<div class="consumable-dot ${i < state.used ? 'used' : ''}"></div>`).join('');
     card.innerHTML = `
       <div class="flex justify-between items-start mb-2">
         <div>
@@ -1497,63 +1306,39 @@ function renderConsumables() {
         ${isExhausted ? '<span class="badge" style="background:var(--accent);color:white;">Исчерпан</span>' : ''}
       </div>
       <div class="flex justify-between items-center mb-2">
-        <span class="text-xs font-semibold" style="color:${item.color};">
-          Осталось: ${remaining} / ${item.maxUses}
-        </span>
+        <span class="text-xs font-semibold" style="color:${item.color};">Осталось: ${remaining} / ${item.maxUses}</span>
         <div class="flex gap-1">${dots}</div>
       </div>
       <div class="flex gap-2">
-        <button class="btn btn-use flex-1 text-xs" style="padding:8px;" 
-                onclick="useConsumable('${item.id}')" 
-                ${isExhausted ? 'disabled' : ''}>
-          − Использовать
-        </button>
-        <button class="btn btn-return flex-1 text-xs" style="padding:8px;" 
-                onclick="returnConsumable('${item.id}')" 
-                ${state.used === 0 ? 'disabled' : ''}>
-          + Вернуть
-        </button>
+        <button class="btn btn-use flex-1 text-xs" style="padding:8px;" onclick="useConsumable('${item.id}')" ${isExhausted ? 'disabled' : ''}>− Использовать</button>
+        <button class="btn btn-return flex-1 text-xs" style="padding:8px;" onclick="returnConsumable('${item.id}')" ${state.used === 0 ? 'disabled' : ''}>+ Вернуть</button>
       </div>
     `;
     list.appendChild(card);
   });
 }
-
 function useConsumable(itemId) {
   const item = CONSUMABLES.find(c => c.id === itemId);
   const state = consumableState[itemId];
-  
-  if (state.used >= item.maxUses) {
-    if (tg) tg.HapticFeedback.notificationOccurred('error');
-    return;
-  }
-  
+  if (state.used >= item.maxUses) { if (tg) tg.HapticFeedback.notificationOccurred('error'); return; }
   state.used++;
   if (tg) tg.HapticFeedback.impactOccurred('light');
   renderConsumables();
 }
-
 function returnConsumable(itemId) {
   const state = consumableState[itemId];
-  
-  if (state.used <= 0) {
-    if (tg) tg.HapticFeedback.notificationOccurred('error');
-    return;
-  }
-  
+  if (state.used <= 0) { if (tg) tg.HapticFeedback.notificationOccurred('error'); return; }
   state.used--;
   if (tg) tg.HapticFeedback.impactOccurred('light');
   renderConsumables();
 }
-
 function resetConsumables() {
-  CONSUMABLES.forEach(c => {
-    consumableState[c.id] = { used: 0 };
-  });
+  CONSUMABLES.forEach(c => { consumableState[c.id] = { used: 0 }; });
   if (tg) tg.HapticFeedback.notificationOccurred('warning');
   renderConsumables();
 }
 
+// ============ STATS ============
 function updateStats() {
   const found = EVIDENCE.filter(e => evidenceState[e] === 1).length;
   const ruled = EVIDENCE.filter(e => evidenceState[e] === 2).length;
@@ -1561,42 +1346,34 @@ function updateStats() {
   document.getElementById('statFound').textContent = found;
   document.getElementById('statRuled').textContent = ruled;
   document.getElementById('statPossible').textContent = possible.length;
-
+  
+  // Подсчёт возможных комнат призрака
+  const possibleRoomsCount = rooms.filter(r => {
+    const a = analyzeRoom(r);
+    return a.isPossible && !r.confirmed;
+  }).length;
+  document.getElementById('statRooms').textContent = possibleRoomsCount;
+  
   const list = document.getElementById('possibleGhosts');
   if (possible.length === 0) {
     list.innerHTML = '<p class="text-xs" style="color:var(--accent);">Нет подходящих призраков</p>';
   } else if (possible.length <= 5) {
-    list.innerHTML = possible.map(g => `
-      <div class="flex justify-between text-xs cursor-pointer hover:text-white" style="color:var(--muted);" onclick='showGhostDetails(${JSON.stringify(g).replace(/'/g,"&#39;")})'>
-        <span>${g.name}</span>
-        <span style="color:var(--ghost);">→</span>
-      </div>
-    `).join('');
+    list.innerHTML = possible.map(g => `<div class="flex justify-between text-xs cursor-pointer hover:text-white" style="color:var(--muted);" onclick='showGhostDetails(${JSON.stringify(g).replace(/'/g,"&#39;")})'>
+      <span>${g.name}</span><span style="color:var(--ghost);">→</span></div>`).join('');
   } else {
     list.innerHTML = `<p class="text-xs" style="color:var(--muted);">${possible.length} призраков</p>`;
   }
-
   document.getElementById('confirmedCount').textContent = found + ' / 2';
 }
 
+// ============ HUNTERS ============
 function addHunter() {
-  if (hunters.length >= 6) {
-    if (tg) tg.HapticFeedback.notificationOccurred('error');
-    return;
-  }
+  if (hunters.length >= 6) { if (tg) tg.HapticFeedback.notificationOccurred('error'); return; }
   const startSanity = gameMode === 'normal' ? 11 : 7;
-  hunters.push({
-    id: Date.now(),
-    name: 'Охотник ' + (hunters.length + 1),
-    sanity: startSanity,
-    maxSanity: startSanity,
-    noise: 0,
-    alive: true
-  });
+  hunters.push({ id: Date.now(), name: 'Охотник ' + (hunters.length + 1), sanity: startSanity, maxSanity: startSanity, noise: 0, alive: true });
   if (tg) tg.HapticFeedback.impactOccurred('light');
   renderHunters();
 }
-
 function renderHunters() {
   const list = document.getElementById('huntersList');
   if (hunters.length === 0) {
@@ -1615,13 +1392,8 @@ function renderHunters() {
       </div>
       <div class="space-y-2 text-sm">
         <div>
-          <div class="flex justify-between mb-1">
-            <span style="color:var(--muted);">Рассудок</span>
-            <span class="font-bold">${h.sanity} / ${h.maxSanity}</span>
-          </div>
-          <div class="sanity-bar">
-            <div class="sanity-fill" style="width:${(h.sanity/h.maxSanity)*100}%"></div>
-          </div>
+          <div class="flex justify-between mb-1"><span style="color:var(--muted);">Рассудок</span><span class="font-bold">${h.sanity} / ${h.maxSanity}</span></div>
+          <div class="sanity-bar"><div class="sanity-fill" style="width:${(h.sanity/h.maxSanity)*100}%"></div></div>
           <div class="flex gap-1 mt-1 flex-wrap">
             <button class="btn text-xs" style="padding:4px 8px;" onclick="changeSanity(${i},-1)">−1</button>
             <button class="btn text-xs" style="padding:4px 8px;" onclick="changeSanity(${i},1)">+1</button>
@@ -1630,13 +1402,8 @@ function renderHunters() {
           </div>
         </div>
         <div>
-          <div class="flex justify-between mb-1">
-            <span style="color:var(--muted);">Шум</span>
-            <span class="font-bold">${h.noise}</span>
-          </div>
-          <div class="noise-bar">
-            <div class="noise-fill" style="width:${Math.min(100,h.noise*20)}%"></div>
-          </div>
+          <div class="flex justify-between mb-1"><span style="color:var(--muted);">Шум</span><span class="font-bold">${h.noise}</span></div>
+          <div class="noise-bar"><div class="noise-fill" style="width:${Math.min(100,h.noise*20)}%"></div></div>
           <div class="flex gap-1 mt-1 flex-wrap">
             <button class="btn text-xs" style="padding:4px 8px;" onclick="changeNoise(${i},-1)">−1</button>
             <button class="btn text-xs" style="padding:4px 8px;" onclick="changeNoise(${i},1)">+1</button>
@@ -1648,76 +1415,47 @@ function renderHunters() {
   `).join('');
   document.getElementById('aliveCount').textContent = hunters.filter(h => h.alive).length;
 }
-
 function changeSanity(i, delta) {
   hunters[i].sanity = Math.max(0, Math.min(hunters[i].maxSanity, hunters[i].sanity + delta));
-  if (hunters[i].sanity === 0) {
-    hunters[i].alive = false;
-    if (tg) tg.HapticFeedback.notificationOccurred('error');
-  } else {
-    if (tg) tg.HapticFeedback.impactOccurred('light');
-  }
+  if (hunters[i].sanity === 0) { hunters[i].alive = false; if (tg) tg.HapticFeedback.notificationOccurred('error'); }
+  else { if (tg) tg.HapticFeedback.impactOccurred('light'); }
   renderHunters();
 }
-
-function changeNoise(i, delta) {
-  hunters[i].noise = Math.max(0, hunters[i].noise + delta);
-  if (tg) tg.HapticFeedback.impactOccurred('light');
-  renderHunters();
-}
-
-function resetNoise(i) {
-  hunters[i].noise = 0;
-  renderHunters();
-}
-
+function changeNoise(i, delta) { hunters[i].noise = Math.max(0, hunters[i].noise + delta); if (tg) tg.HapticFeedback.impactOccurred('light'); renderHunters(); }
+function resetNoise(i) { hunters[i].noise = 0; renderHunters(); }
 function toggleAlive(i) {
   hunters[i].alive = !hunters[i].alive;
   if (hunters[i].alive && hunters[i].sanity === 0) hunters[i].sanity = 1;
   if (tg) tg.HapticFeedback.impactOccurred('medium');
   renderHunters();
 }
-
-function removeHunter(i) {
-  hunters.splice(i, 1);
-  if (tg) tg.HapticFeedback.impactOccurred('medium');
-  renderHunters();
-}
-
+function removeHunter(i) { hunters.splice(i, 1); if (tg) tg.HapticFeedback.impactOccurred('medium'); renderHunters(); }
 function resetGame() {
-  hunters = [];
-  round = 1;
+  hunters = []; round = 1;
   document.getElementById('roundNum').textContent = round;
   resetConsumables();
   if (tg) tg.HapticFeedback.notificationOccurred('warning');
   renderHunters();
 }
-
 function updateMode() {
   gameMode = document.getElementById('gameMode').value;
   const startSanity = gameMode === 'normal' ? 11 : 7;
-  hunters.forEach(h => {
-    h.maxSanity = startSanity;
-    h.sanity = Math.min(h.sanity, startSanity);
-  });
+  hunters.forEach(h => { h.maxSanity = startSanity; h.sanity = Math.min(h.sanity, startSanity); });
   renderHunters();
 }
-
 function changeRound(delta) {
   round = Math.max(1, round + delta);
   document.getElementById('roundNum').textContent = round;
   if (tg) tg.HapticFeedback.impactOccurred('light');
 }
 
+// ============ DICE ============
 function rollDice() {
   if (isRolling) return;
   isRolling = true;
-  
   const dice = document.getElementById('dice');
   dice.classList.add('rolling');
-  
   if (tg) tg.HapticFeedback.impactOccurred('medium');
-  
   let count = 0;
   const interval = setInterval(() => {
     dice.textContent = Math.floor(Math.random() * 6) + 1;
@@ -1728,30 +1466,20 @@ function rollDice() {
       dice.textContent = result;
       dice.classList.remove('rolling');
       isRolling = false;
-      
       diceHistory.unshift(result);
       if (diceHistory.length > 6) diceHistory.pop();
-      document.getElementById('diceHistory').innerHTML =
-        'История: ' + diceHistory.map(r => `<span class="badge" style="background:var(--bg2);margin:0 2px;">${r}</span>`).join('');
-      
+      document.getElementById('diceHistory').innerHTML = 'История: ' + diceHistory.map(r => `<span class="badge" style="background:var(--bg2);margin:0 2px;">${r}</span>`).join('');
       if (tg) tg.HapticFeedback.notificationOccurred('success');
     }
   }, 70);
 }
-
 function rollDiceValue() {
   return new Promise(resolve => {
-    if (isRolling) {
-      resolve(null);
-      return;
-    }
+    if (isRolling) { resolve(null); return; }
     isRolling = true;
-    
     const dice = document.getElementById('dice');
     dice.classList.add('rolling');
-    
     if (tg) tg.HapticFeedback.impactOccurred('medium');
-    
     let count = 0;
     const interval = setInterval(() => {
       dice.textContent = Math.floor(Math.random() * 6) + 1;
@@ -1762,23 +1490,18 @@ function rollDiceValue() {
         dice.textContent = result;
         dice.classList.remove('rolling');
         isRolling = false;
-        
         diceHistory.unshift(result);
         if (diceHistory.length > 6) diceHistory.pop();
-        document.getElementById('diceHistory').innerHTML =
-          'История: ' + diceHistory.map(r => `<span class="badge" style="background:var(--bg2);margin:0 2px;">${r}</span>`).join('');
-        
+        document.getElementById('diceHistory').innerHTML = 'История: ' + diceHistory.map(r => `<span class="badge" style="background:var(--bg2);margin:0 2px;">${r}</span>`).join('');
         if (tg) tg.HapticFeedback.notificationOccurred('success');
         resolve(result);
       }
     }, 70);
   });
 }
-
 async function huntCheck() {
   const result = await rollDiceValue();
   if (result === null) return;
-  
   const resultEl = document.getElementById('huntResult');
   if (result >= 5) {
     resultEl.innerHTML = `<span class="pulse" style="color:var(--accent);font-weight:bold;">⚠️ ОХОТА НАЧАЛАСЬ! (выпало ${result})</span>`;
@@ -1789,12 +1512,14 @@ async function huntCheck() {
   }
 }
 
+// ============ INIT ============
 renderEvidence();
 renderGhosts();
 renderFullGhostsList();
 initManualSelect();
 renderCursedItems();
 renderConsumables();
+renderRooms();
 updateStats();
 renderHunters();
 </script>
